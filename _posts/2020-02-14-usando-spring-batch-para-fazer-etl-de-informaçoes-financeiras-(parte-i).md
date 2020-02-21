@@ -8,21 +8,21 @@ image: https://res.cloudinary.com/dm7h7e8xj/image/upload/v1559824575/theme14_gi2
 optimized_image: https://res.cloudinary.com/dm7h7e8xj/image/upload/c_scale,w_380/v1559824575/theme14_gi2ypv.jpg
 category: Dev
 tags:
-    - Java
-    - Spring Framework
-    - Spring Batch
-    - ETL
+  - Java
+  - Spring Framework
+  - Spring Batch
+  - ETL
 author: thiagorossener
 paginate: false
 ---
 
 Comecei a brincar com Spring Batch e ETLs e isso foi o que consegui fazer (até então)….
 
-O ano de 2019 foi bem intenso pra mim pois tive a oportunidade de aprender muita coisa sobre desenvolvimento Web com Java Spring e cultura DevOps no geral. Mas aí é o que dizem: Quanto mais você estuda algo mais você percebe o quão ainda tem que aprender. Então lá estava eu procurando uma forma de aprofundar meus conhecimentos do ecossistema Spring, quando fiquei curioso com o projeto Spring Batch. 
+O ano de 2019 foi bem intenso pra mim pois tive a oportunidade de aprender muita coisa sobre desenvolvimento Web com Java Spring e cultura DevOps no geral. Mas aí é o que dizem: Quanto mais você estuda algo mais você percebe o quão ainda tem que aprender. Então lá estava eu procurando uma forma de aprofundar meus conhecimentos do ecossistema Spring, quando fiquei curioso com o projeto Spring Batch.
 
 Pra quem não sabe Spring Batch é um subprojeto do framework Spring destinado a fazer processamentos em lote. Este projeto possui diversas facilidades incluídas na sua toolset que permite a execução sistemática, determinística e rastreável de trabalhos executados em batches ou lotes. Um exemplo muito bacana de aplicação, é o seu uso para processar um streaming de dados tais como uma planilha ou um banco de dados. E é justamente um exemplo assim que eu vou mostrar aqui inaugurando o meu primeiro artigo for real do meu blog =D
 
-Na minha busca por um caso de uso bacana para entender um pouco mais o Spring Batch,  e aproveitando que ano passado estava inserido no Grupo de Estudos em Ciência de Dados, um projeto de extensão da Unila que você pode conferir mais clicando neste link, me deparei com o conceito de ETL.
+Na minha busca por um caso de uso bacana para entender um pouco mais o Spring Batch, e aproveitando que ano passado estava inserido no Grupo de Estudos em Ciência de Dados, um projeto de extensão da Unila que você pode conferir mais clicando neste link, me deparei com o conceito de ETL.
 
 ## ELT (TL;DR)
 
@@ -36,12 +36,12 @@ Com este conceito em mente, precisava de um conjunto de dados para começar. Com
 
 Dentre os conjuntos de dados fornecidos pela CVM existe um denominado “Informe diário” que segundo a própria CVM tem um demonstrativo com informações como:
 
-* Valor total da carteira do fundo
-* Patrimônio líquido
-* Valor da cota
-* Captações realizadas no dia
-* Resgates pagos no dia
-* Número de cotistas
+- Valor total da carteira do fundo
+- Patrimônio líquido
+- Valor da cota
+- Captações realizadas no dia
+- Resgates pagos no dia
+- Número de cotistas
 
 Baixei uma planilha de um dia aleatório e boom! Um csv com mais de 200.000 linhas de dados estruturados. Perfeito para arregaçar as mangas e começar a brincar.
 
@@ -59,16 +59,20 @@ A ideia é, ler o arquivo CSV, fazer um ETL usando Spring Batch, gravar as infor
 
 O esquema de dados da entidade que eu criei no banco ficou assim:
 
+![DailyInform](https://i.imgur.com/Wp41TkJ.png "Daily Inform")
+
 Apresentados a ideia e uma arquitetura geral do brincadeira, bora escrever um pouco de código!
 
 ## Passo 1, fazendo meu “Hello World” com Spring Batch
 
 Para utilizar o Spring Batch primeiro você precisa colocar as dependências dele no seu projeto. Você pode começar criando um projeto no Spring Initializr selecionando as seguintes dependências:
 
-* Spring boot starter data jpa: (para fazer conexão ao banco de dados)
-* Spring boot starter web: (para criar a camada web responsável por expor os dados vai uma API REST com JSON).
-* mySql-connector-java: Para este tutorial eu optei por utilizar o MySQL, mas qualquer outro DB relacional funciona.
-* spring-boot-starter-batch: A estrelinha do projeto, contém as classes necessárias para utilizar o Spring Batch.
+- Spring boot starter data jpa: (para fazer conexão ao banco de dados)
+- Spring boot starter web: (para criar a camada web responsável por expor os dados vai uma API REST com JSON).
+- mySql-connector-java: Para este tutorial eu optei por utilizar o MySQL, mas qualquer outro DB relacional funciona.
+- spring-boot-starter-batch: A estrelinha do projeto, contém as classes necessárias para utilizar o Spring Batch.
+
+![SpringInitializr](https://i.imgur.com/SwwyBT1.png "Spring Initializr")
 
 Uma vez baixado o zip é só descompactar, abrir na sua IDE favorita e começar a codar!
 
@@ -127,7 +131,10 @@ public class DailyInform implements Serializable {
 
    public DailyInform() {};
 
-   public DailyInform(String cnpj, LocalDate referenceDate, BigDecimal totalValue, BigDecimal quotaValue, BigDecimal netWorth, BigDecimal totalDeposits, BigDecimal totalWithdrawals, Long numberOfQuotaHolders) {
+   public DailyInform(String cnpj, LocalDate referenceDate,
+                      BigDecimal totalValue, BigDecimal quotaValue,
+                      BigDecimal netWorth, BigDecimal totalDeposits,
+                      BigDecimal totalWithdrawals, Long numberOfQuotaHolders) {
        this.cnpj = cnpj;
        this.referenceDate = referenceDate;
        this.totalValue = totalValue;
@@ -152,11 +159,11 @@ public class DailyInform implements Serializable {
 
 Observe que é uma Entidade JPA bem simples só para ilustrar os conceitos. Também adicionei alguns índices para melhorar o desempenho de queries de busca.
 
-Os processamentos em lote no Spring são executados através de um Job. Um job é composto de Steps que definem passos sucessivos de leitura, transformação e escrita que um Job pode ter (para este tutorial faremos um Job com um único Step). O Step  basicamente tem três elementos:
+Os processamentos em lote no Spring são executados através de um Job. Um job é composto de Steps que definem passos sucessivos de leitura, transformação e escrita que um Job pode ter (para este tutorial faremos um Job com um único Step). O Step basicamente tem três elementos:
 
 1. Um reader: Define o que e como vai ser lido. Nesta fase que se define de onde virão os dados (no caso a planilha), e quais colunas serão digeridas.
 2. Um processor: Define uma operação de transformação que o dado lido terá que sofrer até estar pronto para a escrita. Recebe um objeto de entrada e retorna outro objeto de saída.
-3. Um writer: Define onde os dados recém processados serão escritos, neste artigo iremos utilizar um  Repository bean para escrever as informações na tabela do banco de dados.
+3. Um writer: Define onde os dados recém processados serão escritos, neste artigo iremos utilizar um Repository bean para escrever as informações na tabela do banco de dados.
 
 Para utilizar um Job no SpringBatch é necessário configurá-lo. Segue um exemplo de um trecho do arquivo @Configuration(lembrando que o código completo deste tutorial encontra-se no meu GitHub:
 
@@ -166,7 +173,8 @@ Para utilizar um Job no SpringBatch é necessário configurá-lo. Segue um exemp
 public class SpringBatchConfiguration {
 
    @Bean
-   public Job job(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
+   public Job job(JobBuilderFactory jobBuilderFactory,
+                  StepBuilderFactory stepBuilderFactory,
                   ItemReader<DailyInform> itemReader,
                   ItemProcessor<DailyInform, DailyInform> itemProcessor,
                   ItemWriter<DailyInform> itemWriter) {
@@ -211,15 +219,15 @@ public FlatFileItemReader<DailyInform> fileItemReader(@Value("${input}") Resourc
 
 Em que:
 
-Entrada: Resource (uma referência ao arquivo .csv), aqui eu setei o path em uma variável de ambiente ${input} por conveniência.
+Entrada: Resource (uma referência ao arquivo .csv), aqui eu setei o path em uma variável de ambiente \${input} por conveniência.
 
 Saída: Um objeto do tipo `FlatFileItemReader<DailyInform>` onde eu configuro:
 
-* O recurso que será lido
-* O encoding do arquivo, no caso eu descobri que a planilha baixada não está em UTF-8, logo eu precisei informar o encoding correto para não haver falhas de leitura de * caracteres especiais tais como à ó ã (Português né ?)
-* Nome deste bean: provavelmente utilizado pelo Spring para uma indexação interna deste reader.
-* Linhas para pular: Coloquei o valor 1 para pular o cabeçalho e ir direto para os dados.
-* O LineMapper: O bean auxiliar necessário para configurar as políticas de leitura. Sua criação será detalhada a seguir.
+- O recurso que será lido
+- O encoding do arquivo, no caso eu descobri que a planilha baixada não está em UTF-8, logo eu precisei informar o encoding correto para não haver falhas de leitura de \* caracteres especiais tais como à ó ã (Português né ?)
+- Nome deste bean: provavelmente utilizado pelo Spring para uma indexação interna deste reader.
+- Linhas para pular: Coloquei o valor 1 para pular o cabeçalho e ir direto para os dados.
+- O LineMapper: O bean auxiliar necessário para configurar as políticas de leitura. Sua criação será detalhada a seguir.
 
 ### Criando o LineMapper
 
@@ -233,7 +241,14 @@ public LineMapper<DailyInform> lineMapper() {
 
    lineTokenizer.setDelimiter(";");
 
-   lineTokenizer.setNames("CNPJ_FUNDO", "DT_COMPTC", "VL_TOTAL", "VL_QUOTA", "VL_PATRIM_LIQ", "CAPTC_DIA", "RESG_DIA", "NR_COTST");
+   lineTokenizer.setNames("CNPJ_FUNDO",
+                          "DT_COMPTC",
+                          "VL_TOTAL",
+                          "VL_QUOTA",
+                          "VL_PATRIM_LIQ",
+                          "CAPTC_DIA",
+                          "RESG_DIA",
+                          "NR_COTST");
    lineTokenizer.setStrict(false);
 
    DailyInformFieldSetMapper dailyInformFieldSetMapper = new DailyInformFieldSetMapper();
@@ -248,10 +263,10 @@ public LineMapper<DailyInform> lineMapper() {
 
 O objeto retornado por este método é uma instância da classe DefaultLineMapper, que implementa a interface LineMapper, onde é configurado:
 
-* O delimitador: no caso do CSV da CVM foi utilizado o caractere ‘;’ para separar os dados de cada coluna
-* Define os tokens (ou os nomes) de cada coluna que será lida, bem como a quantas serão processadas. Mais tarde estes nomes serão utilizados no bean que coloca as informações de cada linha em um objeto POJO DailyInform.
-* Setar leitura estrita: Caso seja true toda linha lida deve ter o número correto de colunas, se for marcada como false o SpringBatch aceita a leitura de linhas que não possui o mesmo número de colunas definidos nos tokens. Caso haja menos colunas, os valores que faltam serão preenchidos com empty(vazio), caso haja mais colunas elas serão simplesmente ignoradas.
-* O fieldsetmapper: Bean que define como os dados lidos das linhas serão convertidos em um POJO. Neste caso eu criei uma classe chamada DailyInformFieldSetMapper que faz este trabalho.
+- O delimitador: no caso do CSV da CVM foi utilizado o caractere ‘;’ para separar os dados de cada coluna
+- Define os tokens (ou os nomes) de cada coluna que será lida, bem como a quantas serão processadas. Mais tarde estes nomes serão utilizados no bean que coloca as informações de cada linha em um objeto POJO DailyInform.
+- Setar leitura estrita: Caso seja true toda linha lida deve ter o número correto de colunas, se for marcada como false o SpringBatch aceita a leitura de linhas que não possui o mesmo número de colunas definidos nos tokens. Caso haja menos colunas, os valores que faltam serão preenchidos com empty(vazio), caso haja mais colunas elas serão simplesmente ignoradas.
+- O fieldsetmapper: Bean que define como os dados lidos das linhas serão convertidos em um POJO. Neste caso eu criei uma classe chamada DailyInformFieldSetMapper que faz este trabalho.
 
 ### O DailyInformFieldSetMapper (pois aqui não existe mágica)
 
@@ -264,7 +279,8 @@ public class DailyInformFieldSetMapper implements FieldSetMapper<DailyInform> {
    public DailyInform mapFieldSet(FieldSet fieldSet) throws BindException {
        final DailyInform dailyInform = new DailyInform();
        dailyInform.setCnpj(fieldSet.readString("CNPJ_FUNDO"));
-       dailyInform.setReferenceDate(fieldSet.readDate("DT_COMPTC").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+       dailyInform.setReferenceDate(fieldSet.readDate("DT_COMPTC")
+                  .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
        dailyInform.setTotalValue(fieldSet.readBigDecimal("VL_TOTAL"));
        dailyInform.setQuotaValue(fieldSet.readBigDecimal("VL_QUOTA"));
        dailyInform.setNetWorth(fieldSet.readBigDecimal("VL_PATRIM_LIQ"));
@@ -303,8 +319,154 @@ Observe que é necessário implementar o método process da interface ItemProces
 
 Por último só faltou implementar o estágio da escrita. É o que vou mostrar agora.
 
+## Parte 4 - Configurando a Escrita
 
-Cas sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. *Aenean eu leo quam.* Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
+Primeiramente, vamos criar um repositório para a entidade DailyInform que será utilizado pelo Writer para escrever os dados no DB.
+
+```java
+@Repository
+public interface DailyInformRepository extends JpaRepository<DailyInform, Long> {
+   List<DailyInform> findDistinctByCnpj(String cnpj);
+}
+
+```
+
+É um repositório simples utilizando Spring Data sem muito mistério. Só adicionei um método para achar os informes diários via CNPJ pois eu criei um endpoint na camada Web que traz os resultados por empresa.
+
+Feito o repositório, agora é só criar o Writer, que basicamente é um componente Spring que implementa a inteface ItemWriter:
+
+```java
+@Component
+public class DBWriter implements ItemWriter<DailyInform> {
+
+   private final DailyInformRepository dailyInformRepository;
+
+   @Autowired
+   public DBWriter(DailyInformRepository dailyInformRepository) {
+       this.dailyInformRepository = dailyInformRepository;
+   }
+
+   @Override
+   public void write(List<? extends DailyInform> list) {
+       dailyInformRepository.saveAll(list);
+   }
+}
+
+```
+
+O único método que o a interface impõe implementar o é o write. Este por sua vez recebe uma lista com dados (os chunks que são transformados no passo anterior), que por sua vez eu mando escrever no banco utilizando o DailyInformRepository, injetado aqui na classe como um atributo chamado dailyInformRepository. As JpaRepositories possuem um método chamado saveAll onde se passa uma collection java que será salva no banco, feito isso aquelas informações são persistidas e nossos dados finalmente chegam ao seu destino final =D
+
+## Bônus - Camada Web
+
+Uma vez que os dados foram salvos no banco de dados, é bem tranquilo fazer uma camada web para expor as informações em formato JSON. Se você é bem tradicional e quer seguir a arquitetura N-camadas, pode fazer uma Service um Controller. Os trechos de código abaixo ilustram como fazer isso:
+
+```java
+@Service
+public class FundsService {
+
+   private final DailyInformRepository dailyInformRepository;
+
+   @Autowired
+   public FundsService(DailyInformRepository dailyInformRepository) {
+       this.dailyInformRepository = dailyInformRepository;
+   }
+
+   @Transactional(readOnly = true)
+   public List<DailyInform> getDailyInformByCNPJ(String cnpj) {
+       return dailyInformRepository.findDistinctByCnpj(cnpj);
+   }
+}
+```
+
+E a controller:
+
+```java
+@RestController
+@RequestMapping("/api/daily-informs")
+public class FundsController {
+
+   private final FundsService fundsService;
+
+   @Autowired
+   public FundsController(FundsService fundsService) {
+       this.fundsService = fundsService;
+   }
+
+   @GetMapping("/{cnpj}")
+   public ResponseEntity<List<DailyInform>> all(@PathVariable("cnpj") String cnpj) {
+       return ResponseEntity.of(Optional.of(fundsService.getDailyInformByCNPJ(cnpj)));
+   }
+}
+
+```
+
+Sobre estes dois componentes tenho as seguintes considerações:
+
+1. Repare que eu injeto o repositório no serviço, e o serviço na controller. Seguindo os preceitos de arquitetura em camadas e expondo a camada de dados somente via serviços.
+2. Em FundsService eu coloquei a annotation @Transaction com o parâmetro readonly para true, desta forma eu informo para o Spring abrir um contexto transacional deste método e que não vou fazer operações de escrita e remoção no banco de dados, unindo controle transacional com um ganho de performance.
+3. Na controller resolvi utilizar o cnpj como um PathParam, mas existem outras formas que isso pode ser feito (através de uma queryParam obrigatória por exemplo).
+4. Por fim eu injetei todos os componentes através de construtores de classe, gosto de fazer assim pois consigo declarar minhas dependências como final, deixando os atributos da classe mais imutáveis.
+
+## Botanto para Rodar!
+
+Feito tudo agora chegou a hora de rodar esse batch. Pra rodar o job assim que o Spring startar eu implementei a interface CommandLineRunner na classe principal que executa o job configurado. O resultado fica assim:
+
+```java
+@SpringBootApplication
+public class BatchProcessingApplication implements CommandLineRunner {
+
+   @Bean
+   public CNPJFormatter cnpjFormatter() {
+       return new CNPJFormatter();
+   }
+
+   @Autowired
+   private JobLauncher jobLauncher;
+
+   @Autowired
+   private Job job;
+
+   public static void main(String[] args) {
+       SpringApplication.run(BatchProcessingApplication.class, args);
+   }
+
+   @Override
+   public void run(String... args) throws Exception {
+       jobLauncher.run(job, new JobParameters());
+   }
+}
+
+```
+
+O bean Job é detectado pelo Spring e ele vem lá do Job que criamos no arquivo de Configuração, além disso, precisamos de um JobLaucher que nada mais é um do que um bean provido pelo Spring para fazer o lançamento do seu job. Fazemos isso colocando o atributo job dentro do método run do job launcher. O parâmetro JobParameters é basicamente um Wrapper de um Map<String, Object> que te permite passar parâmetros para o job que vai rodar (não vamos utilizar isto neste tutorial, logo podemos passar uma instância vazia).
+
+Fazendo isso dando play (certifque-se que os seu banco de dados está de pé e acessível da sua aplicação) podemos ver os jobs rodando…..
+
+E aqui na minha máquina demorou mais ou menos uma hora e meia para processar as 200 mil linhas de dados.
+
+![Imgur](https://i.imgur.com/gIyfW6P.png "Resultados cmd")
+
+O banco de dados ficou assim:
+
+![Resultados BD](https://i.imgur.com/jf34chM.png "Resultados BD")
+
+E este é o resultado usando o endpoint que criei pra trazer os resultados por CNPJ, bacana não ? XD
+
+![Resutlados JSON](https://i.imgur.com/XmSLgAA.png "Resultados JSON")
+
+## Conclusão
+
+Wow se você chegou até aqui meus parabéns! Hehehe este tutorial ficou bem maior do que eu esperava, mas tá ótimo pra começar este blog com o pé direito. É óbvio que tem bastante coisa pra melhorar, mas agora eu tenho um norte e espero fazer pelo menos 2 artigos novos aqui por mês.
+
+Quanto a solução, bom funcionou, mas eu creio que existem bastante pontos de melhoria. Algumas coisas eu já descobri que dá pra melhorar e posso falar um pouco mais em um próximo artigo. Um exemplo é que se houver alguma linha com informações irregulares na planilha, todo o job para. Como isso não é desejável, precisamos definir uma política de tolerância e registro de erros. Outra coisa que também é possível fazer é paralelizar a execução, como deixar o processamento de forma mais eficiente ? Será que tem que fazer alguma configuração a mais no banco ? Fique ligado para mais conteúdo vindo por aí.
+
+Espero que tenham gostado deste meu primeiro artigo e peço pra que você compartilhe com os seus colegas. Sinta-se livre para fazer observações nos comentários, quanto mais feedback receber melhor!
+
+[GitHub da solução](https://github.com/lcastrooliveira/funds_daily_report)
+
+Abraços;
+
+Cas sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. _Aenean eu leo quam._ Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
 
 > Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
@@ -315,7 +477,7 @@ Etiam porta **sem malesuada magna** mollis euismod. Cras mattis consectetur puru
 HTML defines a long list of available inline tags, a complete list of which can be found on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
 - **To bold text**, use `<strong>`.
-- *To italicize text*, use `<em>`.
+- _To italicize text_, use `<em>`.
 - Abbreviations, like <abbr title="HyperText Markup Langage">HTML</abbr> should use `<abbr>`, with an optional `title` attribute for the full phrase.
 - Citations, like <cite>&mdash; Thiago Rossener</cite>, should use `<cite>`.
 - <del>Deleted</del> text should use `<del>` and <ins>inserted</ins> text should use `<ins>`.
@@ -354,9 +516,9 @@ Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna m
 
 Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
 
-* Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-* Donec id elit non mi porta gravida at eget metus.
-* Nulla vitae elit libero, a pharetra augue.
+- Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+- Donec id elit non mi porta gravida at eget metus.
+- Nulla vitae elit libero, a pharetra augue.
 
 Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
 
