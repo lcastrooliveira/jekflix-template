@@ -59,7 +59,7 @@ A ideia é, ler o arquivo CSV, fazer um ETL usando Spring Batch, gravar as infor
 
 O esquema de dados da entidade que eu criei no banco ficou assim:
 
-![DailyInform](https://i.imgur.com/Wp41TkJ.png "Daily Inform")
+[![DailyInform](https://i.imgur.com/Wp41TkJ.png "Daily Inform")](https://i.imgur.com/Wp41TkJ.png){:data-lightbox="image-1"}{:data-title="My title"}
 
 Apresentados a ideia e uma arquitetura geral do brincadeira, bora escrever um pouco de código!
 
