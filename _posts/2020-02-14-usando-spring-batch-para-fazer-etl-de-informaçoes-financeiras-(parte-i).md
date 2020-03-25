@@ -1,11 +1,11 @@
 ---
 date: 2020-02-14 13:32:04
 layout: post
-title: "Usando Spring Batch para fazer ETL de informaçoes financeiras (Parte I)"
-subtitle: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-description: Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-image: https://res.cloudinary.com/dm7h7e8xj/image/upload/v1559824575/theme14_gi2ypv.jpg
-optimized_image: https://res.cloudinary.com/dm7h7e8xj/image/upload/c_scale,w_380/v1559824575/theme14_gi2ypv.jpg
+title: "Usando Spring Batch para fazer ETL de informaçoes financeiras"
+subtitle: Como fazer um ELT bem simples para converter dados CSV para um banco usando Spring Batch
+description: Como fazer um ELT bem simples para converter dados CSV para um banco usando Spring Batch
+image: https://i.imgur.com/ReOQlce.png
+optimized_image: https://i.imgur.com/ReOQlce.png
 category: Dev
 tags:
   - Java
@@ -59,6 +59,9 @@ Cada linha do CSV representa informações de um fundo em determinado dia. Dentr
 Como primeiro passo pensei em só fazer um ETL simples, ou seja carregar as informações do CSV e gravá-las em um banco de dados MySQL. Para não ficar sem fazer nenhuma mudança no passo de transformação, resolvi apenas remover a formatação do campo CNPJ, ou seja, no banco eu somente salvo os dígitos, sem pontos ou traços.
 
 O rascunho de guardanapo da minha solução ficou assim:
+
+[![ETLSchema](https://i.imgur.com/4ID6lG9.png "ETL Schema")](https://i.imgur.com/4ID6lG9.png){:data-lightbox="ETLSchema"}{:data-title="Esquema da Solução (V1)"}
+
 
 A ideia é, ler o arquivo CSV, fazer um ETL usando Spring Batch, gravar as informações em uma tabela no banco de dados usando o Spring Data, e finamente utilizar o Spring Web para disponibilizar as informações em formato JSON através de uma API.
 
