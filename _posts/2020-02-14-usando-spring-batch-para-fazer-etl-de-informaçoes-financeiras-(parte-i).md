@@ -12,7 +12,7 @@ tags:
   - Spring Framework
   - Spring Batch
   - ETL
-author: thiagorossener
+author: lcastrooliveira
 paginate: false
 ---
 
