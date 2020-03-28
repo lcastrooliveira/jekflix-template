@@ -1,15 +1,15 @@
 # Site Settings
-name: Jekflix
-title: Jekflix | A blog theme for Jekyll
-description: Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener.
+name: lcastrooliveira.dev
+title: lcastrooliveira.dev | Blog sobre Java & friends
+description: Blog de desenvolvimento Web com tutoriais de dicas construído por Lucas de Castro Oliveira
 tags:
   - blog
-  - template
-  - jekyll
-  - theme
-  - netlify
-email: youremail@xyz.com
-disqus_username: disqus_username
+  - dev
+  - web
+  - java
+  - devops
+email: lcastro.oliveira@gmail.com
+disqus_username: lcastrooliveira-dev
 show_hero: true
 menu:
   - title: Home
@@ -24,28 +24,30 @@ menu:
 
 # Social Media Settings
 # Remove the item if you don't need it
-github_username: github_username
-facebook_username: facebook_username
-twitter_username: twitter_username
-instagram_username: instagram_username
-linkedin_username: linkedin_username
-medium_username: medium_username
+github_username: lcastrooliveira
+linkedin_username: lcastrooliveira
 
 
 # Posts Settings
 show_time_bar: true
 show_modal_on_exit: false
-show_modal_on_finish_post: true
-two_columns_layout: true
+show_modal_on_finish_post: false
+two_columns_layout: false
 
 
 # Advanced Settings
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 google_analytics: "UA-XXXXXXXX-X"
-language: "en"
+language: "pt-BR"
 categories_folder: category
 sent_message_url: "/contact/message-sent/"
+
+
+# Translation files
+translations:
+  button:
+    read_now: "Leia Agora"
 
 
 # Build settings
@@ -56,7 +58,7 @@ collections:
   authors:
     output: true
 paginate_path: "/page/:num/"
-show_get_theme_btn: true
+show_get_theme_btn: false
 use_logo: false
 
 # Content paginator
