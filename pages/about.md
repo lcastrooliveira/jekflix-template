@@ -1,17 +1,16 @@
 ---
 layout: page
 title: About
-description: Some description.
+description: About my blog and myself.
 permalink: /about/
 ---
 
-<img class="img-rounded" src="/assets/img/uploads/profile.png" alt="Thiago Rossener" width="200">
+<img class="img-rounded" src="/assets/img/uploads/pirata.jpg" alt="Lucas de Castro Oliveira" width="200">
 
-# About
+# Sobre este blog
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Este blog é um projeto pessoal que eu já cojitava a fazer a muito tempo. Sou uma pessoa muito curiosa que adora experimentar com as mais diversas tecnologias (um pouco mad scientist mesmo). Aqui você vai encontrar artigos relacionados a desenvolvimento, cultura DevOps, automação e o que mais der na telha. A idéia é que eu publique entre um e dois artigos por mês.
+
+Nos links abaixo você poderá encontrar os meus perfils no LinkedIn e Github.
+
+
