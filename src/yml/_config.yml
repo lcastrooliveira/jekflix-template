@@ -24,7 +24,7 @@ collections:
 paginate_path: "/page/:num/"
 show_get_theme_btn: false
 use_logo: false
-
+date_format: '%Y-%m-%d'
 # Content paginator
 paginate_content:
   enabled: true
