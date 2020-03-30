@@ -1,6 +1,6 @@
 ---
 layout: author
-photo: /assets/img/uploads/lucas.jpg
+photo: https://i.imgur.com/HgJaGeg.jpg
 name: lcastrooliveira
 display_name: Lucas de Castro Oliveira
 position: Web Dev - Parque Tecnológico Itaipu

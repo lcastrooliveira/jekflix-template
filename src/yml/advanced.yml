@@ -1,6 +1,6 @@
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
-google_analytics: "UA-XXXXXXXX-X"
+baseurl: "/blog" # the subpath of your site, e.g. /blog
+url: "https://lcastrooliveira.dev" # the base hostname & protocol for your site
+google_analytics: "UA-162076837-1"
 language: "pt-BR"
 categories_folder: category
 sent_message_url: "/contact/message-sent/"

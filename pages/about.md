@@ -5,7 +5,7 @@ description: About my blog and myself.
 permalink: /about/
 ---
 
-<img class="img-rounded" src="/assets/img/uploads/pirata.jpg" alt="Lucas de Castro Oliveira" width="200">
+<img class="img-rounded" src="https://imgur.com/s3p89NT.jpg" alt="Lucas de Castro Oliveira" width="200">
 
 # Sobre este blog
 
