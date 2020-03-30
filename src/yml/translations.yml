@@ -1,0 +1,44 @@
+translations:
+  button:
+    read_now: Leia Agora
+    share_on_twitter: Compartilhe no Twitter
+    share_on_facebook: Compartilhe no Facebook
+  contact:
+    title: Fale comigo
+    subject: Novo contato!
+    placeholders:
+      name: Seu nome
+      email: Seu email
+      message: Sua mensagem
+    submit_btn: Enviar
+    after_send: 
+      title: Mensagem enviada!
+      message: Obrigado por me enviar uma mensagem. Vou responder assim que possível
+    errors:
+      locale: pt-BR
+      empty_name: Nome é obrigatório
+      empty_email: Email é inválido
+      empty_message: Escreve alguma mensagem
+  error_404:
+    image_alt: 404 - Página não encontrada
+    title: Página não encontrada :(
+    message: Me desculpe. Não podemos encontrar a página que você está procurando
+  pagination:
+    next_page: Próxima Página
+    next_post: Pŕoximo Post
+    page: Página
+    of: de
+  recommendation:
+    text: Por que você não lê mais um ?
+    back_btn: Voltar ao início
+  text:
+    author: Autor
+    comments: Comentários
+    min_to_read: minutos para ler
+    now: Agora
+    new_post: Novo Post
+    search: Busca
+    see_also: Veja também
+    share: Compartilhar
+  months: Janeiro,Fevereiro,Março,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro
+  
