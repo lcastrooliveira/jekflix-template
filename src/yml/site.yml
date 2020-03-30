@@ -1,21 +1,21 @@
-name: Jekflix
-title: Jekflix | A blog theme for Jekyll
-description: Jekflix is a template for Jekyll inspired by Netflix and made by Thiago Rossener.
+name: lcastrooliveira.dev
+title: lcastrooliveira.dev | Blog sobre Java & friends
+description: Blog de desenvolvimento Web com tutoriais de dicas construído por Lucas de Castro Oliveira
 tags:
   - blog
-  - template
-  - jekyll
-  - theme
-  - netlify
-email: youremail@xyz.com
-disqus_username: disqus_username
+  - dev
+  - web
+  - java
+  - devops
+email: lcastro.oliveira@gmail.com
+disqus_username: lcastrooliveira-dev
 show_hero: true
 menu:
   - title: Home
     url: /
-  - title: About
+  - title: Sobre
     url: /about
-  - title: Contact
+  - title: Contato
     url: /contact
   - title: Feed
     url: /feed.xml
