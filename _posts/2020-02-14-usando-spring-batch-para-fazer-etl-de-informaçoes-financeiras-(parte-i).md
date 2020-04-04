@@ -26,7 +26,7 @@ Na minha busca por um caso de uso bacana para entender um pouco mais o Spring Ba
 
 ## ELT (TL;DR)
 
-Um ETL é uma sigla inglesa que significa Extract Transform e Load (Extrair, Transformar e “Carregar”). A idéia em si é muito simples e consiste em operações que envolvem grande volumes de dados compostas em basicamente em três fases: extração, transformação e carregamento (ou armazenamento).
+Um ETL é uma sigla inglesa que significa Extract Transform e Load (Extrair, Transformar e “Carregar”). A idéia em si é muito simples e consiste em operações que envolvem grande volumes de dados compostas em basicamente em três fases: extração, transformação e carregamento (ou armazenamento). [Definição completinha na Wikipédia](https://pt.wikipedia.org/wiki/Extract,_transform,_load).
 
 Seu uso é muito comum quando se quer transferir um ou até mesmo vários dados de um conjunto de armazenamento para o outro. Sendo que entre origem e destino é possível fazer transformações nos dados tais como agregação, formatação e entre outros.
 
@@ -471,5 +471,18 @@ Quanto a solução, bom funcionou, mas eu creio que existem bastante pontos de m
 Espero que tenham gostado deste meu primeiro artigo e peço pra que você compartilhe com os seus colegas. Sinta-se livre para fazer observações nos comentários, quanto mais feedback receber melhor!
 
 [GitHub da solução](https://github.com/lcastrooliveira/funds_daily_report)
+
+### Referências
+
+Para mais referências visite os seguintes sites. Foram deles que eu me baseei pra fazer este tutorial:
+
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/maven-plugin/)
+* [Spring Batch](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/reference/htmlsingle/#howto-batch-applications)
+
+### Guia
+Este guia também é muito e é do próprio Spring, recomendo para quem quer aprender mais.
+
+* [Creating a Batch Service](https://spring.io/guides/gs/batch-processing/)
 
 Abraços;
