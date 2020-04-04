@@ -36,7 +36,7 @@ two_columns_layout: false
 
 
 # Advanced Settings
-baseurl: "/blog" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://lcastrooliveira.dev" # the base hostname & protocol for your site
 google_analytics: "UA-162076837-1"
 language: "pt-BR"
